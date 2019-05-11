@@ -1,12 +1,13 @@
-import React, { useState, useContext, useCallback, createContext } from "react"
+import React, { useContext, useCallback, createContext } from "react"
 import { ThemeProvider as BaseThemeProvider } from "styled-components"
 
+import { useLocalStorage } from "../hooks/useLocalStorage"
 import { lightTheme, darkTheme } from "../themes"
 
 const ThemeContext = createContext()
 
 const ThemeProvider = ({ children }) => {
-  const [themeString, setThemeString] = useState("light")
+  const [themeString, setThemeString] = useLocalStorage("theme", "light")
   const themeObject = themeString === "dark" ? darkTheme : lightTheme
   return (
     <ThemeContext.Provider value={{ themeString, setThemeString }}>
