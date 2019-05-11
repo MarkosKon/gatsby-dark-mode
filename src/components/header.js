@@ -1,6 +1,6 @@
 // src/components/header.js
 
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Link } from "gatsby"
 import styled from "styled-components"
 import PropTypes from "prop-types"
@@ -8,21 +8,25 @@ import Toggle from "./Toggle"
 
 import sun from "../images/sun.png"
 import moon from "../images/moon.png"
-import { useTheme } from "../context/theme-context"
 
 const Container = styled.header`
-  color: ${({ theme }) => theme.color};
-  background-color: ${({ theme }) => theme.bgDark};
+  color: var(--color);
+  background-color: var(--bgDark);
   margin-bottom: 1.45rem;
 
   a {
     text-decoration: none;
-    color: ${({ theme }) => theme.color};
+    color: var(--color);
   }
 `
 
 const Header = ({ siteTitle }) => {
-  const { theme, toggleTheme } = useTheme()
+  const [theme, setTheme] = useState(null)
+  const ONCE = []
+  useEffect(() => {
+    setTheme(window.__theme)
+    window.__onThemeChange = () => setTheme(window.__theme)
+  }, ONCE)
   return (
     <Container>
       <div
@@ -36,8 +40,10 @@ const Header = ({ siteTitle }) => {
           <Link to="/">{siteTitle}</Link>
         </h1>
         <Toggle
-          defaultChecked={theme === "dark" ? true : false}
-          onChange={toggleTheme}
+          checked={theme === "dark"}
+          onChange={e =>
+            window.__setPreferredTheme(e.target.checked ? "dark" : "light")
+          }
           icons={{
             checked: (
               <img

@@ -1,13 +1,14 @@
 import React from "react"
+import { ThemeProvider } from "styled-components"
 import "normalize.css"
 import "typeface-fira-sans"
 import "typeface-merriweather"
 
-import { ThemeProvider } from "./src/context/theme-context"
 import GlobalStyle from "./src/components/GlobalStyle"
+import { lightTheme } from "./src/themes"
 
 export const wrapRootElement = ({ element }) => (
-  <ThemeProvider>
+  <ThemeProvider theme={lightTheme}>
     <>
       <GlobalStyle />
       {element}

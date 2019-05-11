@@ -13,8 +13,8 @@ import { StaticQuery, graphql } from "gatsby"
 import Header from "./header"
 
 const Container = styled.div`
-  color: ${({ theme }) => theme.color};
-  background-color: ${({ theme }) => theme.bg};
+  color: var(--color);
+  background-color: var(--bg);
   min-height: 100vh;
 `
 

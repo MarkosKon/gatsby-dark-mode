@@ -16,7 +16,27 @@ const GlobalStyle = createGlobalStyle`
     }
 
     a {
-        color: ${({ theme }) => theme.accent};
+        color: var(--accent);
+    }
+
+    body {
+        background-color: var(--bg);
+    }
+
+    body.light {
+    --bg: white;
+    --bgDark: pink;
+    --color: black;
+    --accent: blue;
+    }
+
+    body.dark {
+    -webkit-font-smoothing: antialiased;
+
+    --bg: #2c1320;
+    --bgDark: #15090f;
+    --color: white;
+    --accent: #ef86a9;
     }
 `
 export default GlobalStyle
