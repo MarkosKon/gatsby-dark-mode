@@ -1,7 +1,16 @@
-/**
- * Implement Gatsby's Browser APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/browser-apis/
- */
+import React from "react"
+import "normalize.css"
+import "typeface-fira-sans"
+import "typeface-merriweather"
 
-// You can delete this file if you're not using it
+import { ThemeProvider } from "./src/context/theme-context"
+import GlobalStyle from "./src/components/GlobalStyle"
+
+export const wrapRootElement = ({ element }) => (
+  <ThemeProvider>
+    <>
+      <GlobalStyle />
+      {element}
+    </>
+  </ThemeProvider>
+)

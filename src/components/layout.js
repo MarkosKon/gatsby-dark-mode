@@ -7,10 +7,16 @@
 
 import React from "react"
 import PropTypes from "prop-types"
+import styled from "styled-components"
 import { StaticQuery, graphql } from "gatsby"
 
 import Header from "./header"
-import "./layout.css"
+
+const Container = styled.div`
+  color: ${({ theme }) => theme.color};
+  background-color: ${({ theme }) => theme.bg};
+  min-height: 100vh;
+`
 
 const Layout = ({ children }) => (
   <StaticQuery
@@ -24,7 +30,7 @@ const Layout = ({ children }) => (
       }
     `}
     render={data => (
-      <>
+      <Container>
         <Header siteTitle={data.site.siteMetadata.title} />
         <div
           style={{
@@ -41,7 +47,7 @@ const Layout = ({ children }) => (
             <a href="https://www.gatsbyjs.org">Gatsby</a>
           </footer>
         </div>
-      </>
+      </Container>
     )}
   />
 )
