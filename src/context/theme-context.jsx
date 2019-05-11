@@ -1,4 +1,10 @@
-import React, { useContext, useCallback, createContext } from "react"
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+  createContext,
+} from "react"
 import { ThemeProvider as BaseThemeProvider } from "styled-components"
 
 import { useLocalStorage } from "../hooks/useLocalStorage"
@@ -7,10 +13,21 @@ import { lightTheme, darkTheme } from "../themes"
 const ThemeContext = createContext()
 
 const ThemeProvider = ({ children }) => {
+  const [hasMounted, setHasMounted] = useState(false)
   const [themeString, setThemeString] = useLocalStorage("theme", "light")
   const themeObject = themeString === "dark" ? darkTheme : lightTheme
-  return (
+  const ONCE = []
+  useEffect(() => {
+    setHasMounted(true)
+  }, ONCE)
+  // silly hasMounted implementation, don't do that.
+  return hasMounted ? (
     <ThemeContext.Provider value={{ themeString, setThemeString }}>
+      <BaseThemeProvider theme={themeObject}>{children}</BaseThemeProvider>
+    </ThemeContext.Provider>
+  ) : (
+    <ThemeContext.Provider value={{ themeString, setThemeString }}>
+      <div />
       <BaseThemeProvider theme={themeObject}>{children}</BaseThemeProvider>
     </ThemeContext.Provider>
   )
