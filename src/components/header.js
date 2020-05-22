@@ -22,11 +22,10 @@ const Container = styled.header`
 
 const Header = ({ siteTitle }) => {
   const [theme, setTheme] = useState(null)
-  const ONCE = []
   useEffect(() => {
     setTheme(window.__theme)
     window.__onThemeChange = () => setTheme(window.__theme)
-  }, ONCE)
+  }, [])
   return (
     <Container>
       <div
@@ -39,34 +38,38 @@ const Header = ({ siteTitle }) => {
         <h1 style={{ margin: 0 }}>
           <Link to="/">{siteTitle}</Link>
         </h1>
-        <Toggle
-          checked={theme === "dark"}
-          onChange={e =>
-            window.__setPreferredTheme(e.target.checked ? "dark" : "light")
-          }
-          icons={{
-            checked: (
-              <img
-                style={{ pointerEvents: "none" }}
-                width="16"
-                height="16"
-                alt="moon"
-                aria-hidden
-                src={moon}
-              />
-            ),
-            unchecked: (
-              <img
-                style={{ pointerEvents: "none" }}
-                width="16"
-                height="16"
-                alt="sun"
-                aria-hidden
-                src={sun}
-              />
-            ),
-          }}
-        />
+        {theme ? (
+          <Toggle
+            checked={theme === "dark"}
+            onChange={e =>
+              window.__setPreferredTheme(e.target.checked ? "dark" : "light")
+            }
+            icons={{
+              checked: (
+                <img
+                  style={{ pointerEvents: "none" }}
+                  width="16"
+                  height="16"
+                  alt="moon"
+                  aria-hidden
+                  src={moon}
+                />
+              ),
+              unchecked: (
+                <img
+                  style={{ pointerEvents: "none" }}
+                  width="16"
+                  height="16"
+                  alt="sun"
+                  aria-hidden
+                  src={sun}
+                />
+              ),
+            }}
+          />
+        ) : (
+          <div style={{ height: "28px" }} />
+        )}
       </div>
     </Container>
   )
