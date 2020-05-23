@@ -24,7 +24,11 @@ const Header = ({ siteTitle }) => {
   const [theme, setTheme] = useState(null)
   useEffect(() => {
     setTheme(window.__theme)
-    window.__onThemeChange = () => setTheme(window.__theme)
+    const callback = () => setTheme(window.__theme)
+    window.__addCallback(callback)
+    return () => {
+      window.__removeCallback(callback)
+    }
   }, [])
   return (
     <Container>
@@ -42,7 +46,7 @@ const Header = ({ siteTitle }) => {
           <Toggle
             checked={theme === "dark"}
             onChange={e =>
-              window.__setPreferredTheme(e.target.checked ? "dark" : "light")
+              window.__setTheme(e.target.checked ? "dark" : "light")
             }
             icons={{
               checked: (

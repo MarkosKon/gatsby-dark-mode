@@ -18,29 +18,44 @@ export default class HTML extends React.Component {
           <script
             dangerouslySetInnerHTML={{
               __html: `
-              (function() {
-                window.__onThemeChange = function() {};
-                function setTheme(newTheme) {
-                  window.__theme = newTheme;
-                  preferredTheme = newTheme;
-                  document.body.className = newTheme;
-                  window.__onThemeChange(newTheme);
-                }
-                var preferredTheme;
+              (function initializeTheme() {
                 try {
-                  preferredTheme = localStorage.getItem('theme');
-                } catch (err) { }
-                window.__setPreferredTheme = function(newTheme) {
-                  setTheme(newTheme);
-                  try {
-                    localStorage.setItem('theme', newTheme);
-                  } catch (err) {}
+                  window.__theme = localStorage.getItem("theme");
+                } catch (err) {
+                  console.log("Couldn’t get the theme from local storage.");
                 }
-                var darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
-                darkQuery.addListener(function(e) {
-                  window.__setPreferredTheme(e.matches ? 'dark' : 'light')
+              
+                var callbacks = [];
+                window.__addCallback = function(cb) {
+                  callbacks.push(cb);
+                };
+                window.__removeCallback = function(cb) {
+                  callbacks = callbacks.filter(function(callback) {
+                    return callback !== cb;
+                  });
+                };
+              
+                window.__setTheme = function setTheme(newTheme) {
+                  window.__theme = newTheme;
+                  document.body.className = newTheme;
+                  callbacks.forEach(function(cb) {
+                    cb();
+                  });
+                  try {
+                    localStorage.setItem("theme", newTheme);
+                  } catch (err) {
+                    console.log("Couldn’t save the theme in local storage.");
+                  }
+                };
+              
+                var darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+                darkQuery.addListener(function darkQueryListener(e) {
+                  window.__setTheme(e.matches ? "dark" : "light");
                 });
-                setTheme(preferredTheme || (darkQuery.matches ? 'dark' : 'light'));
+              
+                window.__setTheme(
+                  window.__theme || (darkQuery.matches ? "dark" : "light")
+                );
               })();
             `,
             }}
