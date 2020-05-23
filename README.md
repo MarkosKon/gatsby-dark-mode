@@ -7,3 +7,4 @@ This repository contains the source code for the following post: https://markosk
 - **posts**: An example of how React's hydrate treats differently attributes and text.
 - **context-local-storage**: Context, save preferences in local storage (correct).
 - **css**: Dan Abramov's solution from [overreacted.io](https://overreacted.io/)
+- **css-refactor**: A refactor of the previous method.
