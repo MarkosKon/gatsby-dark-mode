@@ -23,14 +23,14 @@ const GlobalStyle = createGlobalStyle`
         background-color: var(--bg);
     }
 
-    body.light {
+    body[data-theme=light] {
     --bg: white;
     --bgDark: pink;
     --color: black;
     --accent: blue;
     }
 
-    body.dark {
+    body[data-theme=dark] {
     -webkit-font-smoothing: antialiased;
 
     --bg: #2c1320;
