@@ -8,3 +8,4 @@ This repository contains the source code for the following post: https://markosk
 - **context-local-storage**: Context, save preferences in local storage (correct).
 - **css**: Dan Abramov's solution from [overreacted.io](https://overreacted.io/)
 - **css-refactor**: A refactor of the previous method.
+- **css-refactor-hook**: The refactor with a `useTheme` hook (not linked in the post).
