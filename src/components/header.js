@@ -1,6 +1,6 @@
 // src/components/header.js
 
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { Link } from "gatsby"
 import styled from "styled-components"
 import PropTypes from "prop-types"
@@ -8,6 +8,7 @@ import Toggle from "./Toggle"
 
 import sun from "../images/sun.png"
 import moon from "../images/moon.png"
+import { useTheme } from "../hooks/useTheme"
 
 const Container = styled.header`
   color: var(--color);
@@ -21,15 +22,7 @@ const Container = styled.header`
 `
 
 const Header = ({ siteTitle }) => {
-  const [theme, setTheme] = useState(null)
-  useEffect(() => {
-    setTheme(window.__theme)
-    const callback = () => setTheme(window.__theme)
-    window.__addCallback(callback)
-    return () => {
-      window.__removeCallback(callback)
-    }
-  }, [])
+  const { theme, setTheme } = useTheme()
   return (
     <Container>
       <div
@@ -45,9 +38,7 @@ const Header = ({ siteTitle }) => {
         {theme ? (
           <Toggle
             checked={theme === "dark"}
-            onChange={e =>
-              window.__setTheme(e.target.checked ? "dark" : "light")
-            }
+            onChange={e => setTheme(e.target.checked ? "dark" : "light")}
             icons={{
               checked: (
                 <img
