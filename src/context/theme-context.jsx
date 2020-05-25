@@ -8,21 +8,10 @@ import React, {
 
 const ThemeContext = createContext()
 
+let firstTime = true
+
 const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(null)
-
-  // This also needs a useCallback if a parent renders.
-  // I don’t do it because it doesn’t happen in this example.
-  const setThemeAndEffect = newTheme => {
-    setTheme(newTheme)
-
-    document.body.dataset.theme = newTheme
-    try {
-      localStorage.setItem("theme", newTheme)
-    } catch (err) {
-      console.log("Couldn’t save the theme in local storage.")
-    }
-  }
 
   useEffect(() => {
     setTheme(document.body.dataset.theme)
@@ -30,7 +19,7 @@ const ThemeProvider = ({ children }) => {
     const darkQuery = window.matchMedia("(prefers-color-scheme: dark)")
     const listener = e => {
       const newTheme = e.target.matches ? "dark" : "light"
-      setThemeAndEffect(newTheme)
+      setTheme(newTheme)
     }
     darkQuery.addListener(listener)
 
@@ -39,8 +28,26 @@ const ThemeProvider = ({ children }) => {
     }
   }, [])
 
+  useEffect(() => {
+    if (!firstTime) {
+      // Don’t run it without reason the second
+      // time and when the color scheme and the
+      // current theme are the same.
+      if (theme !== document.body.dataset.theme) {
+        document.body.dataset.theme = theme
+        try {
+          localStorage.setItem("theme", theme)
+        } catch (err) {
+          console.log("Couldn’t save the theme in local storage.")
+        }
+      }
+    } else {
+      firstTime = false
+    }
+  }, [theme])
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme: setThemeAndEffect }}>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   )
