@@ -3,7 +3,6 @@ import React, {
   useContext,
   useState,
   useEffect,
-  useCallback,
 } from "react"
 
 const ThemeContext = createContext()
@@ -59,8 +58,7 @@ const useTheme = () => {
 
   const { theme, setTheme } = context
 
-  const setThemeMemo = useCallback(newTheme => setTheme(newTheme), [setTheme])
-  return { theme, setTheme: setThemeMemo }
+  return { theme, setTheme }
 }
 
 export { ThemeProvider, useTheme }
